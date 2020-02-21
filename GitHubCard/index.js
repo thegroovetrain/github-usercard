@@ -24,7 +24,12 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ["thegroovetrain", 
+                        "tetondan",
+                        "dustinmyers",
+                        "justsml",
+                        "luishrd",
+                        "bigknell",];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +50,66 @@ const followersArray = [];
 </div>
 
 */
+
+const card_factory = (ob) => {
+  const card = document.createElement('div');
+  card.classList.add('card');
+
+  const avatar = document.createElement('img');
+  avatar.setAttribute('src', ob.avatar_url);
+  card.append(avatar);
+
+  const cardInfo = document.createElement('div');
+  cardInfo.classList.add('card-info');
+  card.append(cardInfo);
+
+  const name = document.createElement('h3');
+  name.classList.add('name');
+  name.textContent = ob.name;
+  cardInfo.append(name);
+
+  const username = document.createElement('p');
+  username.classList.add('username');
+  username.textContent = ob.login;
+  cardInfo.append(username);
+
+  const location = document.createElement('p');
+  location.textContent = ob.location;
+  cardInfo.append(location);
+
+  const profile = document.createElement('p');
+  const profileURL = ob.html_url;
+  profile.innerHTML = `Profile: <a href="${profileURL}">${profileURL}</a>`;
+  cardInfo.append(profile);
+
+  const followers = document.createElement('p');
+  followers.textContent = `Followers: ${ob.followers}`;
+  cardInfo.append(followers);
+
+  const following = document.createElement('p');
+  following.textContent = `Following: ${ob.following}`;
+  cardInfo.append(following);
+
+  const bio = document.createElement('p');
+  bio.textContent = `Bio: ${ob.bio}`;
+  cardInfo.append(bio);
+
+  return card;
+}
+
+const axiosGetter = (username) => {
+  const cards = document.querySelector('.cards');
+  axios.get(`https://api.github.com/users/${username}`)
+  .then( response => {
+    cards.append(card_factory(response.data));
+  })
+  .catch();
+}
+
+followersArray.forEach((user) => axiosGetter(user));
+
+//const cards = document.querySelector('.cards');
+//cards.append(card_factory(data));
 
 /* List of LS Instructors Github username's: 
   tetondan
