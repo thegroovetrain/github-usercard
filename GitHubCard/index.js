@@ -97,19 +97,14 @@ const card_factory = (ob) => {
   return card;
 }
 
-const axiosGetter = (username) => {
+followersArray.forEach((user) => {
   const cards = document.querySelector('.cards');
-  axios.get(`https://api.github.com/users/${username}`)
+  axios.get(`https://api.github.com/users/${user}`)
   .then( response => {
     cards.append(card_factory(response.data));
   })
-  .catch();
-}
-
-followersArray.forEach((user) => axiosGetter(user));
-
-//const cards = document.querySelector('.cards');
-//cards.append(card_factory(data));
+  .catch((error) => console.log(error));
+});
 
 /* List of LS Instructors Github username's: 
   tetondan
